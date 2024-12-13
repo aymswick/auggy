@@ -6,3 +6,7 @@ sealed class DayEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class PeriodicZoneCheckRequested extends DayEvent {
+  const PeriodicZoneCheckRequested();
+}

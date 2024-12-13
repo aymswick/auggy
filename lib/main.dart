@@ -16,11 +16,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Auggy',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.red.shade300),
+        colorScheme: ColorScheme.fromSeed(
+            brightness: Brightness.dark, seedColor: Colors.green),
         useMaterial3: true,
       ),
       home: BlocProvider(
-        create: (context) => DayBloc(),
+        create: (context) => DayBloc()..add(PeriodicZoneCheckRequested()),
         child: DayView(),
       ),
     );

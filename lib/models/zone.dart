@@ -26,3 +26,10 @@ class Zone implements Equatable {
         footholds,
       ];
 }
+
+extension AsDateTime on TimeOfDay {
+  DateTime asDateTime() {
+    final now = DateTime.now();
+    return DateTime(now.year, now.month, now.day, hour, minute);
+  }
+}
