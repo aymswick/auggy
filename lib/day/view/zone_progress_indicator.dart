@@ -1,5 +1,5 @@
 import 'package:auggy/extensions.dart';
-import 'package:auggy/models/models.dart';
+import 'package:auggy/models/zone.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 

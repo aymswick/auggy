@@ -12,4 +12,11 @@ class Foothold implements Equatable {
 
   @override
   List<Object?> get props => [label, icon];
+
+  factory Foothold.fromJson(Map<String, dynamic> json) {
+    return Foothold(
+      label: json['label'] as String,
+      icon: json['icon'],
+    );
+  }
 }

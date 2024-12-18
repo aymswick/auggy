@@ -7,6 +7,10 @@ sealed class DayEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class ZonesFetched extends DayEvent {
+  const ZonesFetched();
+}
+
 class PeriodicZoneCheckRequested extends DayEvent {
   const PeriodicZoneCheckRequested();
 }
