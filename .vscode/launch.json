@@ -6,8 +6,8 @@
         "request": "launch",
         "program": "lib/main.dart",
         "args": [
-            "--dart-define",
-            "SUPABASE_KEY=$SUPABASE_API_KEY"
+            // "--dart-define",
+            // "SUPABASE_KEY="
           ],    }
     ]
 }

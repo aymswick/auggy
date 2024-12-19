@@ -1,11 +1,13 @@
 import 'package:auggy/models/models.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuggyRepository {
-  const AuggyRepository({required this.client});
+  const AuggyRepository({required this.client, required this.logger});
 
   final SupabaseClient client;
+  final Logger logger;
 
   Future<bool> insertZone(Zone zone) async {
     final formatter = DateFormat('HH:mm:ss');
@@ -15,7 +17,7 @@ class AuggyRepository {
       'stop': formatter.format(zone.stop.asDateTime())
     });
 
-    print(response);
+    logger.d(response);
 
     return (response != null);
   }

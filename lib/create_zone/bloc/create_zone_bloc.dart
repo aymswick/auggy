@@ -17,6 +17,7 @@ class CreateZoneBloc extends Bloc<CreateZoneEvent, CreateZoneState> {
       }
     });
     on<ZoneCreated>((event, emit) async {
+      // TODO(ant): turn on authenticated insert only, set up user auth
       final inserted = await repository.insertZone(event.zone);
     });
   }
