@@ -8,7 +8,7 @@ class DayState extends Equatable {
   const DayState(
       {this.status = DayStatus.initial,
       this.day = const Day(
-        zones: hardcodedZones,
+        zones: [],
       ),
       this.currentZone});
 

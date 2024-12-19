@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:auggy/hardcoded/hardcoded.dart';
+import 'package:auggy/auggy_repository/auggy_repository.dart';
 import 'package:auggy/models/models.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -10,18 +10,21 @@ part 'day_event.dart';
 part 'day_state.dart';
 
 class DayBloc extends Bloc<DayEvent, DayState> {
-  DayBloc() : super(DayState()) {
+  DayBloc(this.repository) : super(DayState()) {
     Stream.periodic(const Duration(minutes: 5), (count) {
       return state.day.currentZone;
     }).listen((result) => add(PeriodicZoneCheckRequested()));
-
     on<ZonesFetched>(
       (event, emit) async {
-        final zones = (await Supabase.instance.client.from('zone').select('*'))
-            .map((e) => Zone.fromJson(e))
+        final zones = (await repository
+                .getZonesByUser(Supabase.instance.client.auth.currentUser!.id))
             .toList();
 
-        emit(state.copyWith(day: Day(zones: zones)));
+        emit(state.copyWith(
+          day: Day(
+            zones: zones,
+          ),
+        ));
       },
     );
     on<PeriodicZoneCheckRequested>((event, emit) {
@@ -36,4 +39,5 @@ class DayBloc extends Bloc<DayEvent, DayState> {
   }
 
   StreamSubscription<Zone>? _currentZoneSubScription;
+  final AuggyRepository repository;
 }

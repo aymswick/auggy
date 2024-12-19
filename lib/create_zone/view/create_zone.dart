@@ -14,7 +14,21 @@ class _CreateZoneViewState extends State<CreateZoneView> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CreateZoneBloc, CreateZoneState>(
+    return BlocConsumer<CreateZoneBloc, CreateZoneState>(
+      listener: (context, state) {
+        final sm = ScaffoldMessenger.of(context);
+        if (state.status == CreateZoneStatus.error) {
+          sm
+            ..clearSnackBars()
+            ..showSnackBar(SnackBar(content: Text('Error creating zone')));
+        } else if (state.status == CreateZoneStatus.success) {
+          sm
+            ..clearSnackBars()
+            ..showSnackBar(
+                SnackBar(content: Text('Successfully created zone')));
+          Navigator.of(context).pop();
+        }
+      },
       builder: (context, state) {
         final bloc = context.read<CreateZoneBloc>();
         return Scaffold(

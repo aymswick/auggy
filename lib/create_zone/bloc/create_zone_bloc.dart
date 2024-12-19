@@ -1,4 +1,5 @@
 import 'package:auggy/auggy_repository/auggy_repository.dart';
+import 'package:auggy/main.dart';
 import 'package:auggy/models/models.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -13,12 +14,19 @@ class CreateZoneBloc extends Bloc<CreateZoneEvent, CreateZoneState> {
         case 'label':
           emit(state.copyWith(label: event.value));
         default:
-          print('not yet implemented');
+          logger.i('not yet implemented');
       }
     });
     on<ZoneCreated>((event, emit) async {
-      // TODO(ant): turn on authenticated insert only, set up user auth
-      final inserted = await repository.insertZone(event.zone);
+      try {
+        final inserted = await repository.insertZone(event.zone);
+        if (inserted == true) {
+          emit(state.copyWith(status: CreateZoneStatus.success));
+        }
+      } catch (err) {
+        logger.e(err);
+        emit(state.copyWith(status: CreateZoneStatus.error));
+      }
     });
   }
   final AuggyRepository repository;

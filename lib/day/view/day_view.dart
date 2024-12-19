@@ -1,4 +1,3 @@
-import 'package:auggy/auggy_repository/auggy_repository.dart';
 import 'package:auggy/create_zone/bloc/create_zone_bloc.dart';
 import 'package:auggy/create_zone/view/create_zone.dart';
 import 'package:auggy/day/bloc/day_bloc.dart';
@@ -54,48 +53,54 @@ class _DayViewState extends State<DayView> {
                 title:
                     Text('${Supabase.instance.client.auth.currentUser?.email}'),
                 actions: [
-                  FutureBuilder(
-                    future: CastDiscoveryService().search(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        logger.d(snapshot.data?.map(
-                          (e) => e,
-                        ));
-                        if (snapshot.data!.isEmpty) {
-                          return Text('No cast devices found.');
-                        } else {
-                          return IconButton(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Dialog(
-                                        child: Column(
-                                          children:
-                                              snapshot.data!.map((device) {
-                                            return ListTile(
-                                              title: Text(device.name),
-                                              onTap: () {
-                                                _connect(context, device);
-                                              },
-                                            );
-                                          }).toList(),
-                                        ),
-                                      );
-                                    });
-                              },
-                              icon: Icon(Icons.cast));
-                        }
-                      } else {
-                        if (snapshot.hasError) {
-                          logger.e(snapshot.error.toString());
-                          return Text('Cast not supported.');
-                        } else {
-                          return CircularProgressIndicator.adaptive();
-                        }
-                      }
-                    },
-                  )
+                  IconButton(
+                      onPressed: () => bloc.add(ZonesFetched()),
+                      icon: Icon(Icons.refresh_rounded)),
+                  // FutureBuilder(
+                  //   future: CastDiscoveryService().search(),
+                  //   builder: (context, snapshot) {
+                  //     if (snapshot.hasData) {
+                  //       logger.d(snapshot.data?.map(
+                  //         (e) => e,
+                  //       ));
+                  //       if (snapshot.data!.isEmpty) {
+                  //         return Padding(
+                  //           padding: const EdgeInsets.all(8.0),
+                  //           child: Text('No cast devices found.'),
+                  //         );
+                  //       } else {
+                  //         return IconButton(
+                  //             onPressed: () {
+                  //               showDialog(
+                  //                   context: context,
+                  //                   builder: (context) {
+                  //                     return Dialog(
+                  //                       child: Column(
+                  //                         children:
+                  //                             snapshot.data!.map((device) {
+                  //                           return ListTile(
+                  //                             title: Text(device.name),
+                  //                             onTap: () {
+                  //                               _connect(context, device);
+                  //                             },
+                  //                           );
+                  //                         }).toList(),
+                  //                       ),
+                  //                     );
+                  //                   });
+                  //             },
+                  //             icon: Icon(Icons.cast));
+                  //       }
+                  //     } else {
+                  //       if (snapshot.hasError) {
+                  //         logger.e(snapshot.error.toString());
+                  //         return Text('Cast not supported.');
+                  //       } else {
+                  //         return CircularProgressIndicator.adaptive();
+                  //       }
+                  //     }
+                  //   },
+                  // )
                 ],
               ),
               floatingActionButton: FloatingActionButton.extended(
@@ -105,9 +110,7 @@ class _DayViewState extends State<DayView> {
                       MaterialPageRoute(builder: (context) {
                         return BlocProvider(
                           create: (context) => CreateZoneBloc(
-                            AuggyRepository(
-                                client: Supabase.instance.client,
-                                logger: logger),
+                            auggyRepo,
                           ),
                           child: CreateZoneView(),
                         );

@@ -12,11 +12,14 @@ class Zone implements Equatable {
   });
 
   factory Zone.fromJson(Map<String, dynamic> json) {
+    final start = '${json['start']}'.split(':');
+    final stop = '${json['stop']}'.split(':');
+    final footholds = json['footholds'];
     return Zone(
       label: json['label'] as String,
-      start: json['start'],
-      stop: json['stop'],
-      footholds: json['footholds'],
+      start: TimeOfDay(hour: int.parse(start[0]), minute: int.parse(start[1])),
+      stop: TimeOfDay(hour: int.parse(stop[0]), minute: int.parse(stop[1])),
+      footholds: footholds ?? [],
     );
   }
 

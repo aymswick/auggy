@@ -1,3 +1,4 @@
+import 'package:auggy/auggy_repository/auggy_repository.dart';
 import 'package:auggy/day/bloc/day_bloc.dart';
 import 'package:auggy/day/view/day_view.dart';
 import 'package:auggy/onboarding/onboarding.dart';
@@ -10,8 +11,9 @@ const supabaseUrl = 'https://uglvmptoivlulcseejku.supabase.co';
 const supabaseKey =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVnbHZtcHRvaXZsdWxjc2Vlamt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ1NTA1NjUsImV4cCI6MjA1MDEyNjU2NX0.Q5Q6bSlz-ib7lgv3chxEMJ0nsbb5Yg4NMLlBaHcU830';
 final logger = Logger();
+final auggyRepo =
+    AuggyRepository(client: Supabase.instance.client, logger: logger);
 
-final isLoggedIn = Supabase.instance.client.auth.currentSession != null;
 Future<void> main() async {
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseKey);
   runApp(MyApp());
@@ -30,9 +32,9 @@ class MyApp extends StatelessWidget {
             brightness: Brightness.dark, seedColor: Colors.green),
         useMaterial3: true,
       ),
-      home: isLoggedIn
+      home: Supabase.instance.client.auth.currentSession != null
           ? BlocProvider(
-              create: (context) => DayBloc()..add(PeriodicZoneCheckRequested()),
+              create: (context) => DayBloc(auggyRepo)..add(ZonesFetched()),
               child: DayView(),
             )
           : OnboardingView(),
