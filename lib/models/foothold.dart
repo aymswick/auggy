@@ -5,7 +5,7 @@ class Foothold implements Equatable {
   const Foothold({required this.label, required this.icon});
 
   final String label;
-  final Icon icon;
+  final Icon? icon;
 
   @override
   bool? get stringify => true;

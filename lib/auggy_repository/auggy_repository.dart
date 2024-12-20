@@ -12,15 +12,25 @@ class AuggyRepository {
   Future<bool> insertZone(Zone zone) async {
     try {
       final formatter = DateFormat('HH:mm:ss');
-      final response = await client.from('zone').insert({
+
+      final insertZonesResponse = await client.from('zone').insert({
         'label': zone.label,
         'start': formatter.format(zone.start.asDateTime()),
         'stop': formatter.format(zone.stop.asDateTime()),
         'author': client.auth.currentUser?.id,
       }).select();
 
-      logger.d(response);
-      return response.isNotEmpty;
+      for (final foothold in zone.footholds) {
+        final insertFootholdsResponse = await client.from('foothold').insert({
+          'label': foothold.label,
+          'author': client.auth.currentUser?.id,
+          'zone': insertZonesResponse[0]['id']
+        }).select();
+        logger.d(insertFootholdsResponse);
+      }
+
+      logger.d(insertZonesResponse);
+      return insertZonesResponse.isNotEmpty;
     } catch (err) {
       logger.e(err);
       return false;
@@ -46,19 +56,17 @@ class AuggyRepository {
 
   Future<List<Zone>> getZonesByUser(String userId) async {
     try {
-      final response = await client.from('zone').select('''
-          *,
-          user_zone!inner(user_id) 
-        ''').eq('user_zone.user_id', userId);
+      final zoneResponse = await client.rpc('get_user_zones_with_footholds',
+          params: {'profile_id': userId}).select();
 
-      logger.d(response);
-
-      return response
+      final zones = zoneResponse
           .map(
             (e) => Zone.fromJson(e),
           )
           .toList();
+      return zones;
     } catch (err) {
+      logger.e(err);
       throw Exception('Failed to get zones by user: $err');
     }
   }

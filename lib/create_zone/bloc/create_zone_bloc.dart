@@ -1,4 +1,5 @@
 import 'package:auggy/auggy_repository/auggy_repository.dart';
+import 'package:auggy/hardcoded/hardcoded.dart';
 import 'package:auggy/main.dart';
 import 'package:auggy/models/models.dart';
 import 'package:bloc/bloc.dart';
@@ -19,10 +20,13 @@ class CreateZoneBloc extends Bloc<CreateZoneEvent, CreateZoneState> {
     });
     on<ZoneCreated>((event, emit) async {
       try {
+        logger.d(hardcodedZones.length);
+        // for (final zone in hardcodedZones) {
         final inserted = await repository.insertZone(event.zone);
         if (inserted == true) {
           emit(state.copyWith(status: CreateZoneStatus.success));
         }
+        // }
       } catch (err) {
         logger.e(err);
         emit(state.copyWith(status: CreateZoneStatus.error));
