@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:auggy/auggy_repository/auggy_repository.dart';
 import 'package:auggy/day/bloc/day_bloc.dart';
 import 'package:auggy/day/view/day_view.dart';
@@ -19,25 +21,52 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+final navigatorKey = GlobalKey<NavigatorState>(); // Create the GlobalKey
+
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    _setupAuthListener();
+  }
+
+  void _setupAuthListener() {
+    Supabase.instance.client.auth.onAuthStateChange.listen((data) {
+      final event = data.event;
+      if (event == AuthChangeEvent.signedOut) {
+        navigatorKey.currentState!
+            .pushNamedAndRemoveUntil('/login', (route) => false);
+      } else if (event == AuthChangeEvent.signedIn) {
+        navigatorKey.currentState!.pushReplacementNamed('/home');
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Auggy',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-            brightness: Brightness.dark, seedColor: Colors.green),
-        useMaterial3: true,
-      ),
-      home: Supabase.instance.client.auth.currentSession != null
-          ? BlocProvider(
-              create: (context) => DayBloc(auggyRepo)..add(ZonesFetched()),
-              child: DayView(),
-            )
-          : OnboardingView(),
-    );
+        navigatorKey: navigatorKey,
+        title: 'Auggy',
+        theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+                brightness: Brightness.dark, seedColor: Colors.green),
+            useMaterial3: true,
+            inputDecorationTheme:
+                InputDecorationTheme(border: OutlineInputBorder())),
+        routes: {
+          '/login': (context) => OnboardingView(),
+          '/home': (context) => BlocProvider(
+                create: (context) => DayBloc(auggyRepo)..add(ZonesFetched()),
+                child: DayView(),
+              ),
+        },
+        initialRoute: '/login');
   }
 }

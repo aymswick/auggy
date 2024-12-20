@@ -41,3 +41,14 @@ class CustomHumanTimeMessages implements timeago.LookupMessages {
   @override
   String wordSeparator() => ' ';
 }
+
+String getInitials(String text) {
+  if (text.isEmpty) return '';
+
+  List<String> words = text.trim().split(' ');
+  if (words.length >= 2) {
+    return '${words[0][0]}${words[1][0]}'.toUpperCase();
+  } else {
+    return text.substring(0, text.length >= 2 ? 2 : text.length).toUpperCase();
+  }
+}

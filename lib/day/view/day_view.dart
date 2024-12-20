@@ -2,8 +2,8 @@ import 'package:auggy/create_zone/bloc/create_zone_bloc.dart';
 import 'package:auggy/create_zone/view/create_zone.dart';
 import 'package:auggy/day/bloc/day_bloc.dart';
 import 'package:auggy/day/view/zone_progress_indicator.dart';
+import 'package:auggy/extensions.dart';
 import 'package:auggy/main.dart';
-import 'package:cast/cast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -56,51 +56,15 @@ class _DayViewState extends State<DayView> {
                   IconButton(
                       onPressed: () => bloc.add(ZonesFetched()),
                       icon: Icon(Icons.refresh_rounded)),
-                  // FutureBuilder(
-                  //   future: CastDiscoveryService().search(),
-                  //   builder: (context, snapshot) {
-                  //     if (snapshot.hasData) {
-                  //       logger.d(snapshot.data?.map(
-                  //         (e) => e,
-                  //       ));
-                  //       if (snapshot.data!.isEmpty) {
-                  //         return Padding(
-                  //           padding: const EdgeInsets.all(8.0),
-                  //           child: Text('No cast devices found.'),
-                  //         );
-                  //       } else {
-                  //         return IconButton(
-                  //             onPressed: () {
-                  //               showDialog(
-                  //                   context: context,
-                  //                   builder: (context) {
-                  //                     return Dialog(
-                  //                       child: Column(
-                  //                         children:
-                  //                             snapshot.data!.map((device) {
-                  //                           return ListTile(
-                  //                             title: Text(device.name),
-                  //                             onTap: () {
-                  //                               _connect(context, device);
-                  //                             },
-                  //                           );
-                  //                         }).toList(),
-                  //                       ),
-                  //                     );
-                  //                   });
-                  //             },
-                  //             icon: Icon(Icons.cast));
-                  //       }
-                  //     } else {
-                  //       if (snapshot.hasError) {
-                  //         logger.e(snapshot.error.toString());
-                  //         return Text('Cast not supported.');
-                  //       } else {
-                  //         return CircularProgressIndicator.adaptive();
-                  //       }
-                  //     }
-                  //   },
-                  // )
+                  GestureDetector(
+                    onLongPress: () {
+                      Supabase.instance.client.auth.signOut();
+                    },
+                    child: CircleAvatar(
+                        child: Text(getInitials(
+                            Supabase.instance.client.auth.currentUser?.email ??
+                                'huh'))),
+                  )
                 ],
               ),
               floatingActionButton: FloatingActionButton.extended(
@@ -179,29 +143,4 @@ class _DayViewState extends State<DayView> {
       },
     );
   }
-}
-
-Future<void> _connect(BuildContext context, CastDevice object) async {
-  final session = await CastSessionManager().startSession(object);
-
-  session.stateStream.listen((state) {
-    if (state == CastSessionState.connected) {
-      _sendMessage(session);
-    }
-  });
-
-  session.messageStream.listen((message) {
-    print('receive message: $message');
-  });
-
-  session.sendMessage(CastSession.kNamespaceReceiver, {
-    'type': 'LAUNCH',
-    'appId': 'YouTube', // set the appId of your app here
-  });
-}
-
-void _sendMessage(CastSession session) {
-  session.sendMessage('urn:x-cast:auggy', {
-    'type': 'sample',
-  });
 }
