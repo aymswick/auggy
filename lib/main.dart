@@ -67,6 +67,8 @@ class _MyAppState extends State<MyApp> {
                 child: DayView(),
               ),
         },
-        initialRoute: '/login');
+        initialRoute: Supabase.instance.client.auth.currentSession == null
+            ? '/login'
+            : '/home');
   }
 }

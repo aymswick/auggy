@@ -21,15 +21,13 @@ class AuggyRepository {
       }).select();
 
       for (final foothold in zone.footholds) {
-        final insertFootholdsResponse = await client.from('foothold').insert({
+        await client.from('foothold').insert({
           'label': foothold.label,
           'author': client.auth.currentUser?.id,
           'zone': insertZonesResponse[0]['id']
         }).select();
-        logger.d(insertFootholdsResponse);
       }
 
-      logger.d(insertZonesResponse);
       return insertZonesResponse.isNotEmpty;
     } catch (err) {
       logger.e(err);
@@ -63,7 +61,10 @@ class AuggyRepository {
           .map(
             (e) => Zone.fromJson(e),
           )
-          .toList();
+          .toList()
+        ..sort(
+          (a, b) => a.stop.compareTo(b.start),
+        );
       return zones;
     } catch (err) {
       logger.e(err);

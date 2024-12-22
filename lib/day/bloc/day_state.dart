@@ -5,16 +5,15 @@ enum DayStatus {
 }
 
 class DayState extends Equatable {
-  const DayState(
-      {this.status = DayStatus.initial,
-      this.day = const Day(
-        zones: [],
-      ),
-      this.currentZone});
+  const DayState({
+    this.status = DayStatus.initial,
+    this.day = const Day(
+      zones: [],
+    ),
+  });
 
   final DayStatus status;
   final Day day;
-  final Zone? currentZone;
 
   DayState copyWith({
     DayStatus? status,
@@ -22,14 +21,13 @@ class DayState extends Equatable {
     Zone? currentZone,
   }) =>
       DayState(
-          day: day ?? this.day,
-          status: status ?? this.status,
-          currentZone: currentZone ?? this.currentZone);
+        day: day ?? this.day,
+        status: status ?? this.status,
+      );
 
   @override
   List<Object?> get props => [
         status,
         day,
-        currentZone,
       ];
 }
