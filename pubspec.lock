@@ -193,7 +193,7 @@ packages:
     source: hosted
     version: "2.1.0"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       sha256: b9c29a161230ee03d3ccf545097fccd9b87a5264228c5d348202e0f0c28f9010
@@ -432,6 +432,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.28.0"
+  scrollable_positioned_list:
+    dependency: "direct main"
+    description:
+      name: scrollable_positioned_list
+      sha256: "1b54d5f1329a1e263269abc9e2543d90806131aa14fe7c6062a8054d57249287"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.8"
   shared_preferences:
     dependency: transitive
     description:
@@ -661,6 +669,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "14.3.0"
+  weather_icons:
+    dependency: "direct main"
+    description:
+      name: weather_icons
+      sha256: "76bd96fda0b723fba74a35083b6d77313306aae4c0f915636cbb7299b69d3b91"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   web:
     dependency: transitive
     description:

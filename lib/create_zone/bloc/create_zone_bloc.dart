@@ -1,7 +1,7 @@
-import 'package:auggy/auggy_repository/auggy_repository.dart';
 import 'package:auggy/hardcoded/hardcoded.dart';
 import 'package:auggy/main.dart';
 import 'package:auggy/models/models.dart';
+import 'package:auggy/repositories/auggy_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
