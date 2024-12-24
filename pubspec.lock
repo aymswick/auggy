@@ -168,6 +168,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.0"
+  glossy:
+    dependency: "direct main"
+    description:
+      name: glossy
+      sha256: e57a20a9883eecbb134a2495d602c75ed99f0bdf010ab09b6d56d680a6af8616
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.4"
+  google_fonts:
+    dependency: "direct main"
+    description:
+      name: google_fonts
+      sha256: b1ac0fe2832c9cc95e5e88b57d627c5e68c223b9657f4b96e1487aa9098c7b82
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.2.1"
   gotrue:
     dependency: transitive
     description:
@@ -517,6 +533,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.12.0"
+  stop_watch_timer:
+    dependency: "direct main"
+    description:
+      name: stop_watch_timer
+      sha256: "86482d05a58bba03909781cd97683b91def80273e071a8cde6f9f423f59e291d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.1"
   storage_client:
     dependency: transitive
     description:

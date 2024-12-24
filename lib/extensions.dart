@@ -7,6 +7,15 @@ extension HumanTime on DateTime {
   }
 }
 
+extension HumanDuration on Duration {
+  String get inRoughTime {
+    final seconds = inSeconds % 60;
+    final minutes = inSeconds / 60;
+    final hours = minutes / 60;
+    return '$hours $minutes: $seconds';
+  }
+}
+
 class CustomHumanTimeMessages implements timeago.LookupMessages {
   @override
   String prefixAgo() => '';
