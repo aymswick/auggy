@@ -9,6 +9,7 @@ import 'package:auggy/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DayView extends StatefulWidget {
@@ -53,10 +54,12 @@ class _DayViewState extends State<DayView> {
 
         final userEmail = Supabase.instance.client.auth.currentUser?.email;
 
+        final df = DateFormat.yMd();
+
         return switch (state.status) {
           (DayStatus.initial) => Scaffold(
               appBar: AppBar(
-                title: SizedBox(height: 56, child: DayProgress(state: state)),
+                title: Text(df.format(DateTime.now()).toString()),
                 centerTitle: true,
                 leading: (state.day.weather != null)
                     ? WeatherIndicator(currentWeather: state.day.weather!)
@@ -94,79 +97,86 @@ class _DayViewState extends State<DayView> {
                     );
                   },
                   label: Text('Create Zone')),
-              body: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: PageView.builder(
-                  controller: _pageViewController,
-                  scrollDirection: Axis.vertical,
-                  physics: PageScrollPhysics(),
-                  itemCount: state.day.zones.length,
-                  itemBuilder: (context, index) {
-                    final theme = Theme.of(context);
+              body: Column(
+                children: [
+                  Flexible(
+                    child: DayProgress(
+                        state: state, controller: _pageViewController),
+                  ),
+                  Flexible(
+                    flex: 15,
+                    child: PageView.builder(
+                      controller: _pageViewController,
+                      scrollDirection: Axis.vertical,
+                      physics: PageScrollPhysics(),
+                      itemCount: state.day.zones.length,
+                      itemBuilder: (context, index) {
+                        final theme = Theme.of(context);
 
-                    final zone = state.day.zones[index];
+                        final zone = state.day.zones[index];
 
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
                             children: [
-                              Flexible(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    zone.label,
-                                    style: GoogleFonts.bowlbyOneSc(
-                                        fontSize: Theme.of(context)
-                                            .textTheme
-                                            .displayLarge
-                                            ?.fontSize),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Flexible(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        zone.label,
+                                        style: GoogleFonts.bowlbyOneSc(
+                                            fontSize: Theme.of(context)
+                                                .textTheme
+                                                .displayLarge
+                                                ?.fontSize),
+                                      ),
+                                    ),
                                   ),
+                                  if (zone == state.day.currentZone)
+                                    Flexible(
+                                        child: ZoneProgressIndicator(zone)),
+                                ],
+                              ),
+                              Expanded(
+                                child: ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemBuilder: (item, index) {
+                                    final foothold = zone.footholds[index];
+                                    return Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: ListTile(
+                                          leading: foothold.icon,
+                                          title: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: TextButton.icon(
+                                              onPressed: () => logger.d(
+                                                  'tapped ${foothold.label}'),
+                                              label: Text(
+                                                foothold.label,
+                                                style: theme
+                                                    .textTheme.displayMedium
+                                                    ?.copyWith(
+                                                        color: theme.colorScheme
+                                                            .onSurface),
+                                              ),
+                                            ),
+                                          )),
+                                    );
+                                  },
+                                  itemCount: zone.footholds.length,
                                 ),
                               ),
-                              if (zone == state.day.currentZone)
-                                Flexible(child: ZoneProgressIndicator(zone)),
                             ],
                           ),
-                          Expanded(
-                            child: ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              itemBuilder: (item, index) {
-                                final foothold = zone.footholds[index];
-                                return Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: ListTile(
-                                      leading: foothold.icon,
-                                      title: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: TextButton.icon(
-                                          onPressed: () => logger
-                                              .d('tapped ${foothold.label}'),
-                                          label: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              foothold.label,
-                                              style: theme
-                                                  .textTheme.displayMedium
-                                                  ?.copyWith(
-                                                      color: theme.colorScheme
-                                                          .onSurface),
-                                            ),
-                                          ),
-                                        ),
-                                      )),
-                                );
-                              },
-                              itemCount: zone.footholds.length,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             )
         };
