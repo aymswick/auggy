@@ -6,6 +6,7 @@ import 'package:auggy/day/view/weather_indicator.dart';
 import 'package:auggy/day/view/zone_progress_indicator.dart';
 import 'package:auggy/extensions.dart';
 import 'package:auggy/main.dart';
+import 'package:auggy/models/foothold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -152,17 +153,37 @@ class _DayViewState extends State<DayView> {
                                           leading: foothold.icon,
                                           title: Align(
                                             alignment: Alignment.centerLeft,
-                                            child: TextButton.icon(
-                                              onPressed: () => logger.d(
-                                                  'tapped ${foothold.label}'),
-                                              label: Text(
-                                                foothold.label,
-                                                style: theme
-                                                    .textTheme.displayMedium
-                                                    ?.copyWith(
-                                                        color: theme.colorScheme
-                                                            .onSurface),
-                                              ),
+                                            child: Row(
+                                              children: [
+                                                TextButton.icon(
+                                                  onPressed: () => logger.d(
+                                                      'tapped ${foothold.label}'),
+                                                  label: Text(
+                                                    foothold.label,
+                                                    style: theme
+                                                        .textTheme.displayMedium
+                                                        ?.copyWith(
+                                                            color: theme
+                                                                .colorScheme
+                                                                .onSurface),
+                                                  ),
+                                                ),
+                                                if (foothold is Chore)
+                                                  Chip(
+                                                    label: Text(
+                                                      'Chore',
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodySmall
+                                                          ?.copyWith(
+                                                              color: Colors
+                                                                  .amber
+                                                                  .onColor),
+                                                    ),
+                                                    backgroundColor:
+                                                        Colors.amber,
+                                                  ),
+                                              ],
                                             ),
                                           )),
                                     );

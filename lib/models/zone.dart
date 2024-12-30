@@ -16,7 +16,10 @@ class Zone implements Equatable {
     final start = '${json['start']}'.split(':');
     final stop = '${json['stop']}'.split(':');
     final footholds = (json['footholds'] as List<dynamic>?)?.map((e) {
-      return Foothold.fromJson(e);
+      return switch (e['type'] as String?) {
+        ('chore') => Chore.fromJson(e),
+        (_) => Foothold.fromJson(e),
+      };
     }).toList();
 
     logger.d(footholds);

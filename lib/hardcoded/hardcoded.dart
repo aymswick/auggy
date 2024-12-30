@@ -1,7 +1,7 @@
 import 'package:auggy/models/models.dart';
 import 'package:flutter/material.dart';
 
-const hardcodedZones = [
+final hardcodedZones = [
   Zone(
       label: 'Open',
       start: TimeOfDay(hour: 8, minute: 0),
@@ -10,7 +10,7 @@ const hardcodedZones = [
         minute: 59,
       ),
       footholds: [
-        Foothold(label: 'Make the Bed', icon: Icon(Icons.bed)),
+        Chore(label: 'Make the Bed', icon: Icon(Icons.bed)),
         Foothold(label: 'Open the Windows', icon: Icon(Icons.window)),
         Foothold(label: 'Start Coffee', icon: Icon(Icons.coffee)),
         Foothold(label: 'Play Wakeup Music', icon: Icon(Icons.music_note))
