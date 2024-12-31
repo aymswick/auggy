@@ -1,7 +1,7 @@
 import 'package:auggy/create_zone/bloc/create_zone_bloc.dart';
 import 'package:auggy/create_zone/view/create_zone.dart';
 import 'package:auggy/day/bloc/day_bloc.dart';
-import 'package:auggy/day/view/day_progress.dart';
+import 'package:auggy/day/view/foothold_tile.dart';
 import 'package:auggy/day/view/weather_indicator.dart';
 import 'package:auggy/day/view/zone_progress_indicator.dart';
 import 'package:auggy/extensions.dart';
@@ -63,7 +63,11 @@ class _DayViewState extends State<DayView> {
                 title: Text(df.format(DateTime.now()).toString()),
                 centerTitle: true,
                 leading: (state.day.weather != null)
-                    ? WeatherIndicator(currentWeather: state.day.weather!)
+                    ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: WeatherIndicator(
+                            currentWeather: state.day.weather!),
+                      )
                     : null,
                 leadingWidth: 100,
                 actions: [
@@ -100,12 +104,7 @@ class _DayViewState extends State<DayView> {
                   label: Text('Create Zone')),
               body: Column(
                 children: [
-                  Flexible(
-                    child: DayProgress(
-                        state: state, controller: _pageViewController),
-                  ),
-                  Flexible(
-                    flex: 15,
+                  Expanded(
                     child: PageView.builder(
                       controller: _pageViewController,
                       scrollDirection: Axis.vertical,
@@ -119,10 +118,9 @@ class _DayViewState extends State<DayView> {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Flexible(
                                     child: Padding(
@@ -132,14 +130,19 @@ class _DayViewState extends State<DayView> {
                                         style: GoogleFonts.bowlbyOneSc(
                                             fontSize: Theme.of(context)
                                                 .textTheme
-                                                .displayLarge
+                                                .displayMedium
                                                 ?.fontSize),
                                       ),
                                     ),
                                   ),
                                   if (zone == state.day.currentZone)
                                     Flexible(
-                                        child: ZoneProgressIndicator(zone)),
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
+                                        child: ZoneProgressIndicator(zone),
+                                      ),
+                                    ),
                                 ],
                               ),
                               Expanded(
@@ -147,45 +150,12 @@ class _DayViewState extends State<DayView> {
                                   physics: NeverScrollableScrollPhysics(),
                                   itemBuilder: (item, index) {
                                     final foothold = zone.footholds[index];
-                                    return Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: ListTile(
-                                          leading: foothold.icon,
-                                          title: Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Row(
-                                              children: [
-                                                TextButton.icon(
-                                                  onPressed: () => logger.d(
-                                                      'tapped ${foothold.label}'),
-                                                  label: Text(
-                                                    foothold.label,
-                                                    style: theme
-                                                        .textTheme.displayMedium
-                                                        ?.copyWith(
-                                                            color: theme
-                                                                .colorScheme
-                                                                .onSurface),
-                                                  ),
-                                                ),
-                                                if (foothold is Chore)
-                                                  Chip(
-                                                    label: Text(
-                                                      'Chore',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodySmall
-                                                          ?.copyWith(
-                                                              color: Colors
-                                                                  .amber
-                                                                  .onColor),
-                                                    ),
-                                                    backgroundColor:
-                                                        Colors.amber,
-                                                  ),
-                                              ],
-                                            ),
-                                          )),
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: FootholdTile(
+                                          zone: zone,
+                                          foothold: foothold,
+                                          theme: theme),
                                     );
                                   },
                                   itemCount: zone.footholds.length,
@@ -205,6 +175,24 @@ class _DayViewState extends State<DayView> {
     );
   }
 }
+
+class FootholdText extends StatelessWidget {
+  const FootholdText(this.foothold, {super.key});
+
+  final Foothold foothold;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Text(
+      foothold.label,
+      style: theme.textTheme.headlineMedium
+          ?.copyWith(color: theme.colorScheme.onSurface),
+    );
+  }
+}
+
+
 
 
 

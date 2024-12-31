@@ -1,4 +1,3 @@
-import 'package:auggy/hardcoded/hardcoded.dart';
 import 'package:auggy/main.dart';
 import 'package:auggy/models/models.dart';
 import 'package:auggy/repositories/auggy_repository.dart';
@@ -20,7 +19,6 @@ class CreateZoneBloc extends Bloc<CreateZoneEvent, CreateZoneState> {
     });
     on<ZoneCreated>((event, emit) async {
       try {
-        logger.d(hardcodedZones.length);
         // for (final zone in hardcodedZones) {
         final inserted = await repository.insertZone(event.zone);
         if (inserted == true) {

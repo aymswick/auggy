@@ -14,3 +14,11 @@ class ZonesFetched extends DayEvent {
 class PeriodicZoneCheckRequested extends DayEvent {
   const PeriodicZoneCheckRequested();
 }
+
+class ChoreCompleted extends DayEvent {
+  const ChoreCompleted(
+      {required this.zone, required this.choreId, required this.completed});
+  final Zone zone;
+  final int choreId;
+  final bool completed;
+}

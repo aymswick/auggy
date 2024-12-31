@@ -18,6 +18,10 @@ class Zone implements Equatable {
     final footholds = (json['footholds'] as List<dynamic>?)?.map((e) {
       return switch (e['type'] as String?) {
         ('chore') => Chore.fromJson(e),
+        ('boost') => Boost.fromJson(e),
+        ('pause') => Pause.fromJson(e),
+        ('contribution') => Contribution.fromJson(e),
+        ('ingest') => Ingest.fromJson(e),
         (_) => Foothold.fromJson(e),
       };
     }).toList();
@@ -36,6 +40,19 @@ class Zone implements Equatable {
   final TimeOfDay stop;
   final String label;
   final List<Foothold> footholds;
+
+  Zone copyWith(
+      {TimeOfDay? start,
+      TimeOfDay? stop,
+      String? label,
+      List<Foothold>? footholds}) {
+    return Zone(
+      label: label ?? this.label,
+      start: start ?? this.start,
+      stop: stop ?? this.stop,
+      footholds: footholds ?? this.footholds,
+    );
+  }
 
   @override
   bool? get stringify => true;

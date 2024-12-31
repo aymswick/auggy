@@ -37,6 +37,7 @@ class AuggyRepository {
 
   Future<List<Foothold>> getFootholdsByZone(String zoneId) async {
     try {
+      // TODO(ant): join foothold_progress table and filter out completed today chores
       final response = await client.from('foothold').select('''
          *,
          zone_foothold!inner(zone_id) 
@@ -70,5 +71,23 @@ class AuggyRepository {
       logger.e(err);
       throw Exception('Failed to get zones by user: $err');
     }
+  }
+
+  Future<void> updateFootholdProgress(
+      {required int choreId,
+      required String userId,
+      required String today,
+      required bool completed}) async {
+    final response = await client
+        .from('foothold_progress')
+        .update({
+          'completed': completed, // Set the completed status
+        })
+        .eq('foothold_id', choreId)
+        .eq('date', today)
+        .eq('user_id', userId)
+        .select();
+
+    logger.d(response);
   }
 }
