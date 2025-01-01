@@ -15,7 +15,7 @@ class FootholdTile extends StatelessWidget {
     required this.theme,
   });
 
-  final Zone zone;
+  final DeprecatedZone zone;
   final Foothold foothold;
   final ThemeData theme;
 

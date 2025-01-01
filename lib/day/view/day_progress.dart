@@ -11,7 +11,6 @@ class DayProgress extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return ListView.separated(
-        scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           final zone = state.day.zones[index];
           return Center(
@@ -29,7 +28,8 @@ class DayProgress extends StatelessWidget {
             ),
           );
         },
-        separatorBuilder: (context, index) => Icon(Icons.arrow_forward_rounded),
+        separatorBuilder: (context, index) =>
+            Icon(Icons.arrow_downward_rounded),
         itemCount: state.day.zones.length);
   }
 }

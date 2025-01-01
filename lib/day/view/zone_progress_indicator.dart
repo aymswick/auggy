@@ -1,4 +1,4 @@
-import 'package:auggy/models/zone.dart';
+import 'package:auggy/models/deprecated/deprecated_zone.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
@@ -6,7 +6,7 @@ import 'package:stop_watch_timer/stop_watch_timer.dart';
 class ZoneProgressIndicator extends StatelessWidget {
   const ZoneProgressIndicator(this.zone, {super.key});
 
-  final Zone zone;
+  final DeprecatedZone zone;
 
   @override
   Widget build(BuildContext context) {

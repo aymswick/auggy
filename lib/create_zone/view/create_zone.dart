@@ -48,7 +48,7 @@ class _CreateZoneViewState extends State<CreateZoneView> {
                           label: Text('Submit'),
                           onPressed: () {
                             if (_formKey.currentState?.validate() ?? false) {
-                              bloc.add(ZoneCreated(Zone(
+                              bloc.add(ZoneCreated(DeprecatedZone(
                                   label: state.label!,
                                   start: TimeOfDay.now(),
                                   stop: TimeOfDay.now(),

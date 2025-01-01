@@ -9,7 +9,7 @@ class AuggyRepository {
   final SupabaseClient client;
   final Logger logger;
 
-  Future<bool> insertZone(Zone zone) async {
+  Future<bool> insertZone(DeprecatedZone zone) async {
     try {
       final formatter = DateFormat('HH:mm:ss');
 
@@ -53,14 +53,14 @@ class AuggyRepository {
     }
   }
 
-  Future<List<Zone>> getZonesByUser(String userId) async {
+  Future<List<DeprecatedZone>> getZonesByUser(String userId) async {
     try {
       final zoneResponse = await client.rpc('get_user_zones_with_footholds',
           params: {'profile_id': userId}).select();
 
       final zones = zoneResponse
           .map(
-            (e) => Zone.fromJson(e),
+            (e) => DeprecatedZone.fromJson(e),
           )
           .toList()
         ..sort(

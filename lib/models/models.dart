@@ -1,4 +1,4 @@
-export 'day.dart';
-export 'foothold.dart';
-export 'player.dart';
-export 'zone.dart';
+export 'deprecated/day.dart';
+export 'deprecated/deprecated_zone.dart';
+export 'deprecated/foothold.dart';
+export 'deprecated/player.dart';

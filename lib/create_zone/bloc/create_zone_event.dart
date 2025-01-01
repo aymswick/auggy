@@ -9,7 +9,7 @@ sealed class CreateZoneEvent extends Equatable {
 
 class ZoneCreated extends CreateZoneEvent {
   const ZoneCreated(this.zone);
-  final Zone zone;
+  final DeprecatedZone zone;
 }
 
 class ZoneFormFieldChanged extends CreateZoneEvent {

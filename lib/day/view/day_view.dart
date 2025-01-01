@@ -6,7 +6,7 @@ import 'package:auggy/day/view/weather_indicator.dart';
 import 'package:auggy/day/view/zone_progress_indicator.dart';
 import 'package:auggy/extensions.dart';
 import 'package:auggy/main.dart';
-import 'package:auggy/models/foothold.dart';
+import 'package:auggy/models/deprecated/foothold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,7 +22,6 @@ class DayView extends StatefulWidget {
 
 class _DayViewState extends State<DayView> {
   late PageController _pageViewController;
-  bool? isCastConnected;
 
   @override
   void initState() {
@@ -104,6 +103,7 @@ class _DayViewState extends State<DayView> {
                   label: Text('Create Zone')),
               body: Column(
                 children: [
+                  // DayProgress(state: state, controller: _pageViewController),
                   Expanded(
                     child: PageView.builder(
                       controller: _pageViewController,

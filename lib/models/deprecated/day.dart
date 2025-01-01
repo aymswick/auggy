@@ -1,22 +1,22 @@
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 
-import 'models.dart';
+import '../models.dart';
 
 class Day implements Equatable {
   const Day({required this.zones, this.weather});
 
   final Map<String, dynamic>? weather;
-  final List<Zone> zones;
+  final List<DeprecatedZone> zones;
 
-  Zone? get currentZone {
+  DeprecatedZone? get currentZone {
     final now = DateTime.now();
     return zones.firstWhereOrNull((e) =>
         now.isAfter(e.start.asDateTime()) && now.isBefore(e.stop.asDateTime()));
   }
 
   Day copyWith({
-    List<Zone>? zones,
+    List<DeprecatedZone>? zones,
     Map<String, dynamic>? weather,
   }) =>
       Day(

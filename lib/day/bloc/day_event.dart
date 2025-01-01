@@ -18,7 +18,7 @@ class PeriodicZoneCheckRequested extends DayEvent {
 class ChoreCompleted extends DayEvent {
   const ChoreCompleted(
       {required this.zone, required this.choreId, required this.completed});
-  final Zone zone;
+  final DeprecatedZone zone;
   final int choreId;
   final bool completed;
 }

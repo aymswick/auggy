@@ -18,7 +18,7 @@ class DayState extends Equatable {
   DayState copyWith({
     DayStatus? status,
     Day? day,
-    Zone? currentZone,
+    DeprecatedZone? currentZone,
   }) =>
       DayState(
         day: day ?? this.day,
